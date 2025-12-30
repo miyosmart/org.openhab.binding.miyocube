@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.miyocube.internal;
+package org.openhab.binding.miyocube.internal.config;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -23,9 +23,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 public class MiyoCubeConfiguration {
 
     /**
-     * Sample configuration parameters. Replace with your own.
+     * IP address or hostname of the Miyo Cube
      */
-    public String hostname = "";
-    public String password = "";
-    public int refreshInterval = 600;
+    public String host = "";
 }

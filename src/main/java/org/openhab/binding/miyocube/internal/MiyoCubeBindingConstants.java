@@ -26,9 +26,23 @@ public class MiyoCubeBindingConstants {
 
     private static final String BINDING_ID = "miyocube";
 
-    // List of all Thing Type UIDs
-    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "sample");
+    /**
+     * The thing type UID for the Miyo Cube
+     */
+    public static final ThingTypeUID THING_TYPE_CUBE = new ThingTypeUID(BINDING_ID, "cube");
 
-    // List of all Channel ids
-    public static final String CHANNEL_1 = "channel1";
+    /**
+     * The thing type UID for the Miyo Circuit
+     */
+    public static final ThingTypeUID THING_TYPE_CIRCUIT = new ThingTypeUID(BINDING_ID, "circuit");
+
+    /**
+     * The thing type UID for the Miyo Valve
+     */
+    public static final ThingTypeUID THING_TYPE_VALVE = new ThingTypeUID(BINDING_ID, "valve");
+
+    /**
+     * The thing type UID for the Miyo Sensor
+     */
+    public static final ThingTypeUID THING_TYPE_SENSOR = new ThingTypeUID(BINDING_ID, "sensor");
 }

@@ -1,95 +1,55 @@
 # MiyoCube Binding
 
-_Give some details about what this binding is meant for - a protocol, system, specific device._
+This binding integrates the [Miyo Smart Irrigation System](https://miyo.garden)
+The integration happens through the local Miyo Cube, which acts as the central gateway for the sensors and valves.
 
-_If possible, provide some resources like pictures (only PNG is supported currently), a video, etc. to give an impression of what can be done with this binding._
-_You can place such resources into a `doc` folder next to this README.md._
-
-_Put each sentence in a separate line to improve readability of diffs._
+![Miyo](doc/miyo-logo.png)
+[https://miyo.garden](https://miyo.garden)
 
 ## Supported Things
 
-_Please describe the different supported things / devices including their ThingTypeUID within this section._
-_Which different types are supported, which models were tested etc.?_
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/OH-INF/thing``` of your binding._
+The Cube Bridge is required as a "bridge" for the devices connected to the physical Miyo cube.
+It supports all of the standard Miyo devices.
 
-- `bridge`: Short description of the Bridge, if any
-- `sample`: Short description of the Thing with the ThingTypeUID `sample`
+- `cube`: The `cube`-bridge acts as the bridge for all the Miyo subcomponents
+- `circuit`: The `circuit`-things represent the logical irrigation circuits for your garden
+- `sensor`: The `sensor`-things represent your Miyo moisture sensors
+- `valve`: The `valve`-things represent your Miyo valves
 
 ## Discovery
 
-_Describe the available auto-discovery features here._
-_Mention for what it works and what needs to be kept in mind when using it._
+There is currently no auto discovery support for the Miyo Cube itself implemented.
+If a Cube Bridge is set up, a scan will find all the connected devices of the cube and adds them as things.
 
 ## Binding Configuration
 
-_If your binding requires or supports general configuration settings, please create a folder ```cfg``` and place the configuration file ```<bindingId>.cfg``` inside it._
-_In this section, you should link to this file and provide some information about the options._
-_The file could e.g. look like:_
-
-```
-# Configuration for the MiyoCube Binding
-#
-# Default secret key for the pairing of the MiyoCube Thing.
-# It has to be between 10-40 (alphanumeric) characters.
-# This may be changed by the user for security reasons.
-secret=openHABSecret
-```
-
-_Note that it is planned to generate some part of this based on the information that is available within ```src/main/resources/OH-INF/binding``` of your binding._
-
-_If your binding does not offer any generic configurations, you can remove this section completely._
+The binding does not need any special configuration. Just the IP-Adress of the Cube is needed, when setting up the Cube Bridge.
 
 ## Thing Configuration
 
-_Describe what is needed to manually configure a thing, either through the UI or via a thing-file._
-_This should be mainly about its mandatory and optional configuration parameters._
+### `cube` Thing Configuration
 
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/OH-INF/thing``` of your binding._
-
-### `sample` Thing Configuration
+Before connecting the `cube` bridge, the hardware button on the cube must be pressed so that the linking mode is activated.
+Without this, the Binding won't be able to fetch an API key from the Cube.
 
 | Name            | Type    | Description                           | Default | Required | Advanced |
 |-----------------|---------|---------------------------------------|---------|----------|----------|
-| hostname        | text    | Hostname or IP address of the device  | N/A     | yes      | no       |
-| password        | text    | Password to access the device         | N/A     | yes      | no       |
-| refreshInterval | integer | Interval the device is polled in sec. | 600     | no       | yes      |
+| IP              | text    | IP address of the Miyo Cube           | N/A     | yes      | no       |
 
 ## Channels
 
-_Here you should provide information about available channel types, what their meaning is and how they can be used._
-
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/OH-INF/thing``` of your binding._
-
-| Channel | Type   | Read/Write | Description                 |
-|---------|--------|------------|-----------------------------|
-| control | Switch | RW         | This is the control channel |
-
-## Full Example
-
-_Provide a full usage example based on textual configuration files._
-_*.things, *.items examples are mandatory as textual configuration is well used by many users._
-_*.sitemap examples are optional._
-
-### Thing Configuration
-
-```java
-Example thing configuration goes here.
-```
-
-### Item Configuration
-
-```java
-Example item configuration goes here.
-```
-
-### Sitemap Configuration
-
-```perl
-Optional Sitemap configuration goes here.
-Remove this section, if not needed.
-```
-
-## Any custom content here!
-
-_Feel free to add additional sections for whatever you think should also be mentioned about your binding!_
+| Channel               | Type                      | Read/Write | Description                                 |
+|-----------------------|---------------------------|------------|---------------------------------------------|
+| temperature           | Number:Temperature        | R          | Measures the temperature from the sensor.   |
+| moisture              | Number:Dimensionless      | R          | Measures soil moisture (0-100%).            |
+| brightness            | Number:Illuminance        | R          | Measures ambient brightness.                |
+| solarVoltage          | Number:ElectricPotential  | R          | Measures solar panel voltage.               |
+| lastUpdate            | DateTime                  | R          | Timestamp of the last update received.      |
+| valveStatus           | Switch                    | R          | Status of the valve (open/closed).          |
+| valve2Status          | Switch                    | R          | Status of the second valve (if dual valve). |
+| irrigationWasStarted  | Switch                    | R          | Indicates if irrigation is currently active.|
+| valveStaggering       | Switch                    | RW         | Enables/disables valve staggering.          |
+| automaticMode         | Switch                    | RW         | Enables/disables automatic irrigation mode. |
+| startIrrigation       | Switch                    | RW         | Starts irrigation for the circuit.          |
+| stopIrrigation        | Switch                    | RW         | Stops irrigation for the circuit.           |
+| duration              | Number:Time               | RW         | Sets the irrigation duration (1-59 min).    |

@@ -4,45 +4,138 @@
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-	<!-- Sample Thing Type -->
-	<thing-type id="sample">
-		<!-- Comment this in for Things which need a Bridge to function.
-			<supported-bridge-type-refs>
-			<bridge-type-ref id="MiyoCubeBridge" />
-			</supported-bridge-type-refs>
-		-->
-
-		<label>MiyoCube Binding Thing</label>
-		<description>Sample thing for MiyoCube Binding</description>
-
-		<channels>
-			<channel id="channel1" typeId="sample-channel"/>
-		</channels>
+	<bridge-type id="cube">
+		<label>MiyoCube Binding Bridge</label>
+		<description>Bridge for MiyoCube things</description>
 
 		<config-description>
-			<parameter name="hostname" type="text" required="true">
+			<parameter name="host" type="text" required="true">
 				<context>network-address</context>
-				<label>Hostname</label>
-				<description>Hostname or IP address of the device</description>
-			</parameter>
-			<parameter name="password" type="text" required="true">
-				<context>password</context>
-				<label>Password</label>
-				<description>Password to access the device</description>
-			</parameter>
-			<parameter name="refreshInterval" type="integer" unit="s" min="1">
-				<label>Refresh Interval</label>
-				<description>Interval the device is polled in sec.</description>
-				<default>600</default>
-				<advanced>true</advanced>
+				<label>IP</label>
+				<description>IP address of the Miyo Cube</description>
 			</parameter>
 		</config-description>
+	</bridge-type>
+
+	<thing-type id="sensor">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="cube"/>
+		</supported-bridge-type-refs>
+
+		<label>MiyoCube Sensor</label>
+		<description>Miyo Sensor Thing for MiyoCube Binding</description>
+
+		<channels>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="moisture" typeId="moisture"/>
+			<channel id="brightness" typeId="brightness"/>
+			<channel id="solar-voltage" typeId="solar-voltage"/>
+			<channel id="last-update" typeId="last-update"/>
+		</channels>
 	</thing-type>
 
-	<!-- Sample Channel Type -->
-	<channel-type id="sample-channel">
+	<thing-type id="valve">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="cube"/>
+		</supported-bridge-type-refs>
+
+		<label>MiyoCube Valve</label>
+		<description>Miyo Valve Thing for MiyoCube Binding</description>
+
+		<channels>
+			<channel id="valve-status" typeId="valve-status"/>
+			<channel id="valve2-status" typeId="valve2-status"/>
+			<channel id="solar-voltage" typeId="solar-voltage"/>
+			<channel id="last-update" typeId="last-update"/>
+		</channels>
+	</thing-type>
+
+	<thing-type id="circuit">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="cube"/>
+		</supported-bridge-type-refs>
+
+		<label>MiyoCube Circuit</label>
+		<description>Miyo Irrigation Circuit Thing for MiyoCube Binding</description>
+
+		<channels>
+			<channel id="irrigation-was-started" typeId="irrigation-was-started"/>
+			<channel id="valve-staggering" typeId="valve-staggering"/>
+			<channel id="automatic-mode" typeId="automatic-mode"/>
+			<channel id="start-irrigation" typeId="start-irrigation"/>
+			<channel id="stop-irrigation" typeId="stop-irrigation"/>
+			<channel id="duration" typeId="duration"/>
+		</channels>
+	</thing-type>
+
+	<channel-type id="temperature">
 		<item-type>Number:Temperature</item-type>
-		<label>Example Temperature</label><!-- Use uppercase words, except prepositions. 2-3 words, max 25 chars -->
-		<description>Sample channel for MiyoCube Binding</description>
+		<label>Temperature</label>
+		<state pattern="%.0f %unit%" readOnly="true"/>
 	</channel-type>
+	<channel-type id="moisture">
+		<item-type>Number:Dimensionless</item-type>
+		<label>Moisture (0-100%)</label>
+		<state pattern="%.0f %%" readOnly="true"/>
+	</channel-type>
+	<channel-type id="brightness">
+		<item-type>Number:Illuminance</item-type>
+		<label>Brightness</label>
+		<tags>
+			<tag>Measurement</tag>
+			<tag>Illuminance</tag>
+		</tags>
+		<state pattern="%.0f %unit%" readOnly="true"/>
+	</channel-type>
+	<channel-type id="valve-status">
+		<item-type>Switch</item-type>
+		<label>Valve status</label>
+		<state readOnly="true"/>
+	</channel-type>
+	<channel-type id="valve2-status">
+		<item-type>Switch</item-type>
+		<label>Valve 2 status</label>
+		<state readOnly="true"/>
+	</channel-type>
+	<channel-type id="solar-voltage">
+		<item-type>Number:ElectricPotential</item-type>
+		<label>Solar voltage</label>
+		<state pattern="%.1f %unit%" readOnly="true"/>
+	</channel-type>
+	<channel-type id="last-update">
+		<item-type>DateTime</item-type>
+		<label>Last update</label>
+		<state pattern="%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS" readOnly="true"/>
+	</channel-type>
+	<channel-type id="irrigation-was-started">
+		<item-type>Switch</item-type>
+		<label>Irrigation active</label>
+		<state readOnly="true"/>
+	</channel-type>
+	<channel-type id="valve-staggering">
+		<item-type>Switch</item-type>
+		<label>Valve staggering</label>
+		<state readOnly="false"/>
+	</channel-type>
+	<channel-type id="automatic-mode">
+		<item-type>Switch</item-type>
+		<label>Automatic irrigation</label>
+		<state readOnly="false"/>
+	</channel-type>
+	<channel-type id="start-irrigation">
+		<item-type>Switch</item-type>
+		<label>Start irrigation</label>
+		<state readOnly="false"/>
+	</channel-type>
+	<channel-type id="stop-irrigation">
+		<item-type>Switch</item-type>
+		<label>Stop irrigation</label>
+		<state readOnly="false"/>
+	</channel-type>
+	<channel-type id="duration">
+		<item-type>Number:Time</item-type>
+		<label>Irrigation duration</label>
+		<state min="1" max="59" step="1" pattern="%d min" readOnly="false"/>
+	</channel-type>
+
 </thing:thing-descriptions>
