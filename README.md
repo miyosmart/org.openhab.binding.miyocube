@@ -3,6 +3,7 @@
 This binding integrates the [Miyo Smart Irrigation System](https://miyo.garden)
 The integration happens through the local Miyo Cube, which acts as the central gateway for the sensors and valves.
 
+![Miyo](doc/icon.png)
 ![Miyo](doc/miyo-logo.png)
 [https://miyo.garden](https://miyo.garden)
 
