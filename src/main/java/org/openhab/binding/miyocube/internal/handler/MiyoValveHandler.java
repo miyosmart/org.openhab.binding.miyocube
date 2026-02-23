@@ -44,7 +44,18 @@ public class MiyoValveHandler extends MiyoThingHandler {
 
     @Override
     public void handleBridgeUpdate(ChannelUID channelUID, State state) {
-        updateState(channelUID, state);
+        if (channelUID.getId().equals("valve-status")) {
+            if (this.getThing().getUID().getId().endsWith("_1")) {
+                updateState(channelUID, state);
+            }
+        } else if (channelUID.getId().equals("valve2-status")) {
+            if (this.getThing().getUID().getId().endsWith("_2")) {
+                ChannelUID valveChannelUID = new ChannelUID(this.getThing().getUID(), "valve-status");
+                updateState(valveChannelUID, state);
+            }
+        } else {
+            updateState(channelUID, state);
+        }
     }
 
     @Override

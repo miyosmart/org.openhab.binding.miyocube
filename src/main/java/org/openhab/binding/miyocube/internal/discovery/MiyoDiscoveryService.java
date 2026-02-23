@@ -136,8 +136,12 @@ public class MiyoDiscoveryService extends AbstractThingHandlerDiscoveryService<M
                             JsonNode valveData = valve.get("valveData");
 
                             String ip = valveData.get("ipv6").asText();
-                            String id = valveData.get("id").asText().replace("{", "").replace("}", "");
+                            String id = valveData.get("id").asText().replace("{", "").replace("}", "") + "_"
+                                    + valve.get("channel").asText();
                             String label = "Miyo Valve: " + ip;
+                            if (valveData.get("hardwareRevision").asText().equals("1")) {
+                                label += " - " + valve.get("channel").asText();
+                            }
 
                             ThingUID valveUID = new ThingUID(THING_TYPE_VALVE, thingHandler.getThing().getUID(), id);
 

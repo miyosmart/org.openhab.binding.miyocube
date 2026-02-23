@@ -44,7 +44,6 @@
 
 		<channels>
 			<channel id="valve-status" typeId="valve-status"/>
-			<channel id="valve2-status" typeId="valve2-status"/>
 			<channel id="solar-voltage" typeId="solar-voltage"/>
 			<channel id="last-update" typeId="last-update"/>
 		</channels>
@@ -90,11 +89,6 @@
 	<channel-type id="valve-status">
 		<item-type>Switch</item-type>
 		<label>Valve status</label>
-		<state readOnly="true"/>
-	</channel-type>
-	<channel-type id="valve2-status">
-		<item-type>Switch</item-type>
-		<label>Valve 2 status</label>
 		<state readOnly="true"/>
 	</channel-type>
 	<channel-type id="solar-voltage">

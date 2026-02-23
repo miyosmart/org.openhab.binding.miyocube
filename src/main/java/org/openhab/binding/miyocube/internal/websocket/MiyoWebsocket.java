@@ -52,6 +52,7 @@ public class MiyoWebsocket {
     private final WebSocketClient webSocketClient;
     private @Nullable WebSocketSession session;
     private boolean disconnected = false;
+    private boolean reconnectScheduled = false;
 
     public MiyoWebsocket(WebSocketClient webSocketClient, String host, String apiKey,
             MiyoWebsocketEventHandler eventHandler) {
@@ -115,6 +116,7 @@ public class MiyoWebsocket {
     @OnWebSocketConnect
     public synchronized void onConnect(Session session) {
         logger.info("WebSocket connected: {}", session.getRemoteAddress().getAddress());
+        reconnectScheduled = false;
         eventHandler.onOpened();
     }
 
@@ -122,14 +124,12 @@ public class MiyoWebsocket {
     public void onClose(int statusCode, String reason) {
         logger.debug("Miyo WebSocket closed: {} - {}", statusCode, reason);
         scheduleReconnect();
-        eventHandler.onError();
     }
 
     @OnWebSocketError
     public void onError(Throwable cause) {
         logger.debug("Miyo WebSocket error ({})", cause.getMessage());
         scheduleReconnect();
-        eventHandler.onError();
     }
 
     @OnWebSocketMessage
@@ -140,14 +140,23 @@ public class MiyoWebsocket {
     /**
      * Schedules a reconnect attempt after a delay.
      */
-    private void scheduleReconnect() {
+    private synchronized void scheduleReconnect() {
         if (disconnected) {
             logger.debug("WebSocket client is marked as disconnected. Not attempting to reconnect.");
             return;
         }
 
+        if (reconnectScheduled) {
+            logger.debug("Reconnect already scheduled. Skipping duplicate request.");
+            return;
+        }
+
+        reconnectScheduled = true;
         logger.info("Attempting to reconnect WebSocket in {} seconds", retryDelaySeconds);
-        scheduler.schedule(this::connect, retryDelaySeconds, TimeUnit.SECONDS);
+        scheduler.schedule(() -> {
+            reconnectScheduled = false;
+            connect();
+        }, retryDelaySeconds, TimeUnit.SECONDS);
         eventHandler.onError();
     }
 }

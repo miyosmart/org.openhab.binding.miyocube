@@ -258,12 +258,12 @@ public class MiyoCubeHandler extends BaseBridgeHandler implements MiyoWebsocketE
                             JsonNode valve2StatusNode = findStateType(stateTypes, "valve2Status");
                             if (valve2StatusNode != null) {
                                 updateChildThingChannel(valveId, "valve2-status",
-                                        valve2StatusNode.get("value").asText());
+                                valve2StatusNode.get("value").asText());
                             }
                             JsonNode solarVoltageNode = findStateType(stateTypes, "solarVoltage");
                             if (solarVoltageNode != null) {
                                 updateChildThingChannel(valveId, "solar-voltage",
-                                        solarVoltageNode.get("value").asText());
+                                solarVoltageNode.get("value").asText());
                             }
                             JsonNode reachableNode = findStateType(stateTypes, "reachable");
                             if (reachableNode != null) {
@@ -289,7 +289,7 @@ public class MiyoCubeHandler extends BaseBridgeHandler implements MiyoWebsocketE
      */
     private void updateChildThingChannel(String childId, String channelId, String value) {
         for (Thing child : this.getThing().getThings()) {
-            if (child.getUID().getId().equals(childId)) {
+            if (child.getUID().getId().equals(childId) || child.getUID().getId().startsWith(childId + "_")) {
                 // Update the corresponding channel based on stateType and value
                 ThingHandler childHandler = child.getHandler();
                 if (childHandler != null) {

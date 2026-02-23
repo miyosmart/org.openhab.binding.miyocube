@@ -39,18 +39,17 @@ Without this, the Binding won't be able to fetch an API key from the Cube.
 
 ## Channels
 
-| Channel               | Type                      | Read/Write | Description                                 |
-|-----------------------|---------------------------|------------|---------------------------------------------|
-| temperature           | Number:Temperature        | R          | Measures the temperature from the sensor.   |
-| moisture              | Number:Dimensionless      | R          | Measures soil moisture (0-100%).            |
-| brightness            | Number:Illuminance        | R          | Measures ambient brightness.                |
-| solarVoltage          | Number:ElectricPotential  | R          | Measures solar panel voltage.               |
-| lastUpdate            | DateTime                  | R          | Timestamp of the last update received.      |
-| valveStatus           | Switch                    | R          | Status of the valve (open/closed).          |
-| valve2Status          | Switch                    | R          | Status of the second valve (if dual valve). |
-| irrigationWasStarted  | Switch                    | R          | Indicates if irrigation is currently active.|
-| valveStaggering       | Switch                    | RW         | Enables/disables valve staggering.          |
-| automaticMode         | Switch                    | RW         | Enables/disables automatic irrigation mode. |
-| startIrrigation       | Switch                    | RW         | Starts irrigation for the circuit.          |
-| stopIrrigation        | Switch                    | RW         | Stops irrigation for the circuit.           |
-| duration              | Number:Time               | RW         | Sets the irrigation duration (1-59 min).    |
+| Channel                   | Type                      | Read/Write | Description                                 |
+|---------------------------|---------------------------|------------|---------------------------------------------|
+| temperature               | Number:Temperature        | R          | Measures the temperature from the sensor.   |
+| moisture                  | Number:Dimensionless      | R          | Measures soil moisture (0-100%).            |
+| brightness                | Number:Illuminance        | R          | Measures ambient brightness.                |
+| solar-voltage             | Number:ElectricPotential  | R          | Measures solar panel voltage.               |
+| last-update               | DateTime                  | R          | Timestamp of the last update received.      |
+| valve-status              | Switch                    | R          | Status of the valve (open/closed).          |
+| irrigation-was-started    | Switch                    | R          | Indicates if irrigation is currently active.|
+| valve-staggering          | Switch                    | RW         | Enables/disables valve staggering.          |
+| automatic-mode            | Switch                    | RW         | Enables/disables automatic irrigation mode. |
+| start-irrigation          | Switch                    | RW         | Starts irrigation for the circuit.          |
+| stop-irrigation           | Switch                    | RW         | Stops irrigation for the circuit.           |
+| duration                  | Number:Time               | RW         | Sets the irrigation duration (1-59 min).    |
